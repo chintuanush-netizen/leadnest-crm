@@ -146,3 +146,14 @@ Not yet tested against live Meta/Google accounts. That needs your app credential
 5. **Follow-up reminders** view (overdue `next_follow_up`) and a Kanban board.
 6. **Agency admin view:** a super-admin dashboard across all workspaces for Leadnest's own team.
 7. Rate limiting on `ingest` (Supabase `pg_net` or a Cloudflare worker in front).
+
+## Automatic WhatsApp first reply
+
+Lead sources → WhatsApp → *Automatic first reply*. Each workspace uses its own WhatsApp Cloud API number:
+
+1. Permanent access token (System user, `whatsapp_business_messaging` + `whatsapp_business_management`) and the WhatsApp Business Account ID are saved through the `whatsapp-setup` edge function (token stored in `integration_secrets`, never sent to the browser).
+2. Pick an approved template and map each `{{variable}}` to lead first name, full name, project, company or assigned agent.
+3. Choose which sources trigger it (Meta, Google, website, portal).
+
+`insertLead()` in `_shared/leads.ts` calls `autoReplyForLead()` (`_shared/whatsapp.ts`) in the background after every new lead. Repeat enquiries (same number within 90 days), imports, manual leads and WhatsApp-originated leads are skipped. Every send or failure is written to the lead's timeline.
+Templates with media headers or button variables are not supported yet.

@@ -358,3 +358,12 @@ a.trial { text-decoration: none; }
 .theme-switch.compact { display: flex; width: 100%; margin-bottom: 8px; }
 .theme-switch.compact button { flex: 1; justify-content: center; padding: 4px 0; font-size: 14px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* WhatsApp automatic first reply */
+.wa-auto { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 4px 0 12px; background: var(--surface); }
+.wa-auto-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.wa-step { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+.wa-step-title { font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.wa-bubble { background: #dcf8c6; color: #111; border-radius: 10px 10px 10px 2px; padding: 10px 12px; white-space: pre-wrap; max-width: 420px; font-size: 13.5px; margin: 4px 0 8px; box-shadow: 0 1px 1px rgba(0,0,0,.08); }
+:root[data-theme="dark"] .wa-bubble { background: #005c4b; color: #e9edef; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .wa-bubble { background: #005c4b; color: #e9edef; } }

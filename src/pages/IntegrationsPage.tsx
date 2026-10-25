@@ -4,13 +4,14 @@ import { useSession } from "../context/Session";
 import type { Integration, IntegrationType, Project } from "../lib/types";
 import { randomKey, timeAgo } from "../lib/format";
 import { facebookLogin, metaConfigured } from "../lib/facebook";
+import WhatsAppAutoReply from "../components/WhatsAppAutoReply";
 
 const TYPES: { type: IntegrationType; title: string; blurb: string; badge: string }[] = [
   { type: "meta", title: "Meta Lead Ads", blurb: "Facebook & Instagram instant forms, delivered the second someone submits.", badge: "f" },
   { type: "google", title: "Google Ads lead forms", blurb: "Lead form assets on Search, YouTube and Discovery campaigns.", badge: "G" },
   { type: "webhook", title: "Website / landing page", blurb: "Any HTML form, WordPress, Elementor, Webflow or custom page.", badge: "</>" },
   { type: "portal", title: "Property portal / 3rd-party app", blurb: "99acres, MagicBricks, Housing.com, Zapier, Pabbly, Make: anything that can post a webhook.", badge: "⇄" },
-  { type: "whatsapp", title: "WhatsApp", blurb: "New chats on your WhatsApp Business (Cloud API) number become leads.", badge: "W" },
+  { type: "whatsapp", title: "WhatsApp", blurb: "New chats become leads, and every new lead gets an automatic WhatsApp first reply.", badge: "W" },
 ];
 
 const typeInfo = (t: IntegrationType) => TYPES.find((x) => x.type === t)!;
@@ -87,6 +88,7 @@ export default function IntegrationsPage() {
                       </select>
                     </label>
                     <SetupHelp integration={i} />
+                    {i.type === "whatsapp" && <WhatsAppAutoReply integration={i} company={current!.name} onSaved={load} />}
                     <div className="row gap">
                       {(i.type === "webhook" || i.type === "portal" || i.type === "google") && <TestButton integration={i} onDone={load} />}
                       <button className="btn ghost" onClick={() => toggle(i)}>{i.active ? "Pause" : "Resume"}</button>

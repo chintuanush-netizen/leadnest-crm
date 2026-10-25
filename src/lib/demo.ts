@@ -376,6 +376,19 @@ export const demoClient: any = {
   removeChannel: (ch: any) => { ch?._remove?.(); return Promise.resolve("ok"); },
   auth,
   functions: {
-    invoke: async () => ({ data: null, error: { message: "Facebook connect needs the live Meta app. In demo mode a page is already connected." } }),
+    invoke: async (name: string, opts?: { body?: any }) => {
+      if (name === "whatsapp-setup") {
+        const a = opts?.body?.action;
+        if (a === "status") return { data: { has_token: true, phone: "Demo Realty · +91 90000 00000", waba_id: "102345678901234", autoreply: null }, error: null };
+        if (a === "templates") return { data: { templates: [
+          { name: "new_lead_welcome", language: "en", category: "MARKETING", vars: ["1", "2"], header: null, has_buttons_with_vars: false,
+            text: "Hi {{1}}, thank you for your interest in {{2}}! Our property expert will call you shortly. Reply here with a good time to talk." },
+          { name: "site_visit_invite", language: "en", category: "MARKETING", vars: ["customer_name", "project_name"], header: null, has_buttons_with_vars: false,
+            text: "Hello {{customer_name}}, would you like to visit {{project_name}} this weekend? Reply YES and we'll book a slot for you." },
+        ] }, error: null };
+        return { data: { ok: true, phone: "Demo Realty · +91 90000 00000" }, error: null };
+      }
+      return { data: null, error: { message: "Facebook connect needs the live Meta app. In demo mode a page is already connected." } };
+    },
   },
 };

@@ -1,5 +1,6 @@
 // Shared helpers for every lead intake endpoint.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { autoReplyForLead, inBackground } from "./whatsapp.ts";
 
 export const admin = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -191,6 +192,8 @@ export async function insertLead(integ: Integration, input: LeadInput) {
     if (error.code === "23505") return { id: null, duplicate: true };
     throw error;
   }
+  // Automatic WhatsApp first reply (if the workspace turned it on). Runs after the response.
+  if (input.source !== "whatsapp") await inBackground(autoReplyForLead(data.id as string));
   return { id: data.id as string, duplicate: false };
 }
 
