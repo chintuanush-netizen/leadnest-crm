@@ -70,6 +70,11 @@ export default function AuthPage({ inviteMode }: { inviteMode: boolean }) {
         {msg && <div className={`notice ${msg.kind}`}>{msg.text}</div>}
         <button className="btn primary block" disabled={busy}>{busy ? "Please wait…" : mode === "signup" ? "Start free trial" : "Sign in"}</button>
         {mode === "signin" && <button type="button" className="btn ghost block" onClick={magicLink} disabled={busy}>Email me a login link</button>}
+        {mode === "signup" && (
+          <p className="muted small center">
+            By creating an account you agree to our <a href="/terms.html" target="_blank" rel="noreferrer">Terms of Service</a> and <a href="https://leadnestmarketingco.com/privacy.html" target="_blank" rel="noreferrer">Privacy Policy</a>.
+          </p>
+        )}
         <p className="muted small center">
           {mode === "signup" ? "Already have an account? " : "New to Leadnest? "}
           <button type="button" className="link" onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setMsg(null); }}>
