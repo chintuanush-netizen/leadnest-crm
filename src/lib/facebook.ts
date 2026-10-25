@@ -5,6 +5,8 @@ declare global {
 
 const APP_ID = import.meta.env.VITE_META_APP_ID as string | undefined;
 const VERSION = (import.meta.env.VITE_META_GRAPH_VERSION as string | undefined) || "v23.0";
+// Facebook Login for Business (Business-type apps) uses a configuration instead of a scope list.
+const CONFIG_ID = import.meta.env.VITE_META_CONFIG_ID as string | undefined;
 
 export const metaConfigured = Boolean(APP_ID);
 
@@ -41,6 +43,8 @@ export async function facebookLogin(): Promise<string> {
     FB.login((res: any) => {
       if (res.authResponse?.accessToken) resolve(res.authResponse.accessToken);
       else reject(new Error("Facebook login was cancelled"));
-    }, { scope: SCOPE, return_scopes: true, auth_type: "rerequest" });
+    }, CONFIG_ID
+      ? { config_id: CONFIG_ID, response_type: "token", override_default_response_type: true }
+      : { scope: SCOPE, return_scopes: true, auth_type: "rerequest" });
   });
 }
