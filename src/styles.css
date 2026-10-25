@@ -30,7 +30,7 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --brand: #f05252; --brand-ink: #ff7b7d; --brand-soft: #2a1617;
     --bg: #0f0f11; --surface: #18181b; --ink: #ececee; --ink-2: #c7c7cc; --muted: #8e8e96;
     --line: #26262a; --line-strong: #34343a; --hover: #1f1f23; --active: #232327;
@@ -41,6 +41,17 @@
     --red: #f07a7a; --amber: #e0ad55; --blue: #86a6f0; --violet: #b49cf0; --teal: #5cc2b5; --green: #5fc58a; --gray: #71717a;
     color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+    --brand: #f05252; --brand-ink: #ff7b7d; --brand-soft: #2a1617;
+    --bg: #0f0f11; --surface: #18181b; --ink: #ececee; --ink-2: #c7c7cc; --muted: #8e8e96;
+    --line: #26262a; --line-strong: #34343a; --hover: #1f1f23; --active: #232327;
+    --primary: #ececee; --primary-hover: #ffffff; --primary-ink: #111113;
+    --ring: rgba(236, 236, 238, .18); --shadow: none;
+    --red-bg: #2a1718; --amber-bg: #2a2212; --blue-bg: #161d2c; --violet-bg: #1f1a2e;
+    --teal-bg: #12231f; --green-bg: #13231a; --gray-bg: #232327;
+    --red: #f07a7a; --amber: #e0ad55; --blue: #86a6f0; --violet: #b49cf0; --teal: #5cc2b5; --green: #5fc58a; --gray: #71717a;
+    color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -337,3 +348,12 @@ a.trial { text-decoration: none; }
 .trial.warn { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 35%, var(--line)); }
 .trial.bad { color: var(--red); border-color: color-mix(in srgb, var(--red) 35%, var(--line)); }
 .forgot { align-self: flex-start; margin: -6px 0 12px; display: block; }
+
+/* Day / Night / Auto switch */
+.theme-switch { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 8px; background: var(--hover); }
+.theme-switch button { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; padding: 5px 12px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; }
+.theme-switch button:hover { color: var(--ink); }
+.theme-switch button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08); font-weight: 500; }
+.theme-switch.compact { display: flex; width: 100%; margin-bottom: 8px; }
+.theme-switch.compact button { flex: 1; justify-content: center; padding: 4px 0; font-size: 14px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }

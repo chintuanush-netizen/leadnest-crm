@@ -5,18 +5,14 @@ import { supabase } from "../lib/supabase";
 import { contactLink, planState } from "../lib/plan";
 import logoDark from "../assets/leadnest-logo.webp";
 import logoWhite from "../assets/leadnest-logo-white.webp";
+import { useTheme } from "../lib/theme";
+import ThemeSwitch from "./ThemeSwitch";
 
 export function Logo({ onDark = false }: { onDark?: boolean }) {
+  const { dark } = useTheme();
   return (
     <div className="logo">
-      {onDark ? (
-        <img src={logoWhite} alt="Leadnest" className="logo-img" />
-      ) : (
-        <picture>
-          <source srcSet={logoWhite} media="(prefers-color-scheme: dark)" />
-          <img src={logoDark} alt="Leadnest" className="logo-img" />
-        </picture>
-      )}
+      <img src={onDark || dark ? logoWhite : logoDark} alt="Leadnest" className="logo-img" />
       <span className="logo-tag">CRM</span>
     </div>
   );
@@ -54,6 +50,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           ))}
         </nav>
         <div className="sidebar-foot">
+          <ThemeSwitch compact />
           {plan && (current?.plan !== "active" || plan.tone !== "ok") && (
             isAdmin && plan.tone !== "ok"
               ? <a className={`trial ${plan.tone}`} href={contactLink(current, "choose a plan")} target="_blank" rel="noreferrer">{plan.label} · Upgrade</a>

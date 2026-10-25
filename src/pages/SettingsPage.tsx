@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { supabase } from "../lib/supabase";
 import { useSession } from "../context/Session";
 import type { Project } from "../lib/types";
+import ThemeSwitch from "../components/ThemeSwitch";
 import { contactLink, planState } from "../lib/plan";
 
 export default function SettingsPage() {
@@ -75,6 +76,12 @@ export default function SettingsPage() {
           <button className="btn">Save</button>
         </div>
       </form>
+
+      <section className="card">
+        <h3>Appearance</h3>
+        <p className="muted small">Day, Night, or Auto to follow your phone or computer. Saved on this device.</p>
+        <ThemeSwitch />
+      </section>
 
       <form className="card" onSubmit={changePassword}>
         <h3>Password</h3>
