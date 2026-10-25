@@ -56,7 +56,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               ? <a className={`trial ${plan.tone}`} href={contactLink(current, "choose a plan")} target="_blank" rel="noreferrer">{plan.label} · Upgrade</a>
               : <div className={`trial ${plan.tone}`}>{plan.label}</div>
           )}
-          <div className="muted small ellipsis">{session?.user.email}</div>
+          <div className="muted small ellipsis" title={session?.user.email}>{session?.user.email}</div>
           <button className="link" onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
       </aside>

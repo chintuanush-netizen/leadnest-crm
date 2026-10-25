@@ -173,6 +173,7 @@ label.inline { flex-direction: row; align-items: center; gap: 10px; }
 .nav-icon { width: 18px; text-align: center; color: var(--muted); }
 .sidebar nav a.active .nav-icon { color: var(--ink); }
 .sidebar-foot { margin-top: auto; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.sidebar-foot > .ellipsis { max-width: 100%; }
 .trial { font-size: 12px; font-weight: 500; color: var(--ink-2); background: var(--hover); border: 1px solid var(--line); padding: 4px 8px; border-radius: 6px; margin-bottom: 6px; }
 .main { flex: 1; min-width: 0; }
 .page { max-width: 1180px; margin: 0 auto; padding: 28px 28px 60px; }
