@@ -8,6 +8,8 @@ import { admin, corsHeaders, GRAPH, json } from "../_shared/leads.ts";
 
 interface Page { id: string; name: string; access_token: string }
 
+const REQUIRED_PERMS = ["leads_retrieval", "pages_manage_metadata", "pages_read_engagement", "pages_show_list", "pages_manage_ads"];
+
 async function longLivedUserToken(shortToken: string): Promise<string> {
   const qs = new URLSearchParams({
     grant_type: "fb_exchange_token",
@@ -56,6 +58,19 @@ Deno.serve(async (req) => {
 
   try {
     const longToken = await longLivedUserToken(user_token);
+
+    // Which permissions did Facebook actually grant? Lead Ads delivery fails silently without these.
+    const pr = await fetch(`${GRAPH}/me/permissions?access_token=${longToken}`);
+    const pj = await pr.json();
+    const granted: string[] = (pj.data ?? []).filter((p: any) => p.status === "granted").map((p: any) => p.permission);
+    const missing = REQUIRED_PERMS.filter((p) => !granted.includes(p));
+    if (missing.length) {
+      return json({
+        error: `Facebook did not grant: ${missing.join(", ")}. Add these to the Facebook Login for Business configuration (and to the app's use case permissions), then connect again.`,
+        granted, missing,
+      }, 400);
+    }
+
     const pages = await listPages(longToken);
 
     if (action === "list_pages") {
@@ -83,12 +98,12 @@ Deno.serve(async (req) => {
       let integrationId = existing?.id as string | undefined;
       if (integrationId) {
         await admin.from("integrations")
-          .update({ name: page.name, active: true, project_id: project_id ?? null })
+          .update({ name: page.name, active: true, project_id: project_id ?? null, settings: { connected_by: user.email, granted } })
           .eq("id", integrationId);
       } else {
         const { data: created, error } = await admin.from("integrations").insert({
           workspace_id, type: "meta", name: page.name, external_id: page.id,
-          project_id: project_id ?? null, settings: { connected_by: user.email },
+          project_id: project_id ?? null, settings: { connected_by: user.email, granted },
         }).select("id").single();
         if (error) throw error;
         integrationId = created.id;
