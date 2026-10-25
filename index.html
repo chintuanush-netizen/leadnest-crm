@@ -3,7 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#18181b" />
+    <meta name="theme-color" content="#ffffff" />
+    <script>
+      // Apply the saved Day/Night choice before the page paints (no flash).
+      try {
+        var t = localStorage.getItem("leadnest-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+        var d = t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+        document.querySelector('meta[name="theme-color"]').setAttribute("content", d ? "#18181b" : "#ffffff");
+      } catch (e) {}
+    </script>
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -12,8 +21,8 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-BvKflf6C.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CyB4oHup.css">
+    <script type="module" crossorigin src="/assets/index-BaZfWVSf.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Carrnp2R.css">
   </head>
   <body>
     <div id="root"></div>
